@@ -1,0 +1,62 @@
+import { FC, useEffect, useState , /*useContext*/  } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
+import { Product } from "../models/Product";
+
+import { updateLoading } from "../redux/features/homeSlice";
+import SortProducts from "../components/SortProducts"
+ //import { AuthContext } from "../redux/AuthContext";
+import {Config} from "../helpers/Config";
+
+const SingleCategory: FC = () => {
+  const dispatch = useAppDispatch();
+  const { slug } = useParams();
+  const [productList, setProductList] = useState<Product[]>([]);
+  const navigate = useNavigate();
+   // const { token } = useContext(AuthContext)!;
+ // const API_URL = Config.api.baseUrl;
+
+useEffect(() => {
+  if (!slug) return;
+
+  dispatch(updateLoading(true));
+
+  fetch(`${Config.api.baseUrl}/api/v1/categories/${slug}/products`, {
+    headers: {
+      method : "GET"
+    },
+  })
+    .then(res => res.json())
+    .then((data: Product[]) => {
+      setProductList(data);
+    })
+    .finally(() => {
+      dispatch(updateLoading(false));
+    });
+}, [dispatch, slug]);
+
+  return (
+    <div className="container mx-auto min-h-[83vh] p-4 font-karla">
+      <div className="flex items-center justify-between space-x-2 text-lg dark:text-white">
+        <div>
+          <button onClick={() => { navigate('/categories') }}>Categories</button>
+          <span> {">"} </span>
+          <span className="font-bold">{slug}</span>
+        </div>
+        <SortProducts products={productList} onChange={setProductList} />
+      </div>
+      {/* {isLoading ? (
+        <div className="flex items-center justify-center">
+          <div className="animate-spin mt-32 rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900 dark:border-white"></div>
+        </div>
+      ) : (<div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 my-2">
+        {productList?.map((product) => (
+          <ProductCard key={product.id} {...product} />
+        ))}
+      </div>)} */}
+
+    </div>
+  );
+};
+
+export default SingleCategory;
