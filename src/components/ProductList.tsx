@@ -12,8 +12,6 @@ type Props = {
 const ProductList: FC<Props> = ({
   title,
   products,
-  isWishlist = false,
-  onDelete,
 }) => (
   <div className="mt-8 mx-auto px-4 dark:bg-zinc-900 transition-colors">
     {/* Kurumsal Başlık Alanı */}
