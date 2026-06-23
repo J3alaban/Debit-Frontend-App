@@ -3,9 +3,9 @@ version: "3.8"
 services:
   frontend:
     build: .
-    container_name: demirayhidrolik-frontend
+    container_name: debit-frontend
     ports:
-      - "3003:80"   # nginx -> container
+      - "3010:80"   # nginx -> container
     restart: unless-stopped
     environment:
-      VITE_API_URL: https://api.demirayhidrolik.com
+      VITE_API_URL: http://62.72.21.81:3009
