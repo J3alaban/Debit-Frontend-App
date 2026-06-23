@@ -61,7 +61,7 @@ interface ProductResponse {
 
 const ProductManagement: FC = () => {
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector((state) => state.homeReducer.isLoading);
+
 
   const [products, setProducts] = useState<ProductBody[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);

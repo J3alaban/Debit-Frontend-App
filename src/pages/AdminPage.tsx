@@ -3,7 +3,7 @@ import ProductManagement from "./ProductManagement";
 import CategoryManagement from "./CategoryManagement";
 
 const AdminPage = () => {
-  const navigate = useNavigate();
+
 
   return (
       <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-4 md:p-10 transition-colors">

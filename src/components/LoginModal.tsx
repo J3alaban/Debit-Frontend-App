@@ -6,7 +6,7 @@ import { FaUnlock, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
 import { RiLockPasswordFill, RiUser3Fill } from "react-icons/ri";
 import { RxCross1 } from "react-icons/rx";
 import { Config } from "../helpers/Config";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const LoginModal: FC = () => {
   const [email, setEmail] = useState("");
