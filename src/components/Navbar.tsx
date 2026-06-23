@@ -321,6 +321,22 @@ const Navbar: FC = () => {
                                 <span>Personel Listesi</span>
                                 <span className="text-xs opacity-50">→</span>
                             </Link>
+
+                            {/* MOBİL ADMIN LİNKİ (Düzeltilen Kısım) 🚀 */}
+                            {role === "ADMIN" && (
+                                <Link
+                                    to="/admin"
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={`p-4 rounded-none border text-sm uppercase tracking-wider font-bold flex justify-between items-center ${
+                                        isActive("/admin")
+                                            ? "bg-black text-white border-black dark:bg-zinc-800 dark:border-zinc-700"
+                                            : "text-red-600 bg-red-50/50 border-zinc-200 dark:text-red-500 dark:bg-red-950/10 dark:border-zinc-800"
+                                    }`}
+                                >
+                                    <span>Admin</span>
+                                    <span className="text-xs opacity-50">→</span>
+                                </Link>
+                            )}
                         </div>
                     </div>
 
