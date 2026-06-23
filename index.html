@@ -1,36 +1,36 @@
-<!DOCTYPE html> <!-- Belge türünü belirtir, HTML5 için bu etiket kullanılır. -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<html lang="en"> <!-- Sayfanın dilini belirtir, burada İngilizce. -->
+  <!-- Sistem İkonu (EMS Kurumsal Logosu) -->
+  <link rel="icon" type="image/png" href="/ems-logo.png" />
 
-  <head> <!-- Sayfanın meta verilerini içeren bölüm. -->
+  <!-- Sistem Başlığı -->
+  <title>EMS Mobil Sistemler | Zimmet Takip Sistemi</title>
+  <meta name="description" content="EMS Mobil Sistemler Kurumsal Varlık, Demirbaş ve Personel Zimmet Takip Platformu" />
 
-    <meta charset="UTF-8" /> <!-- Karakter kodlamasını belirtir, burada UTF-8. -->
+  <!-- Open Graph Kurumsal Protokol Verileri -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="EMS Mobil Sistemler | Zimmet Takip Sistemi" />
+  <meta property="og:description" content="Kurumsal demirbaş, envanter havuzu ve personel yetkilendirme yönetim arayüzü." />
+  <meta property="og:image" content="/ems-logo.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://zimmet.emsmobilsistemler.com" />
+</head>
 
-    <link rel="icon" type="image/svg+xml" href="/Demiraylogo.png" /> <!-- Tarayıcı sekmesinde görünecek ikon. -->
+<body>
+<!--
+  Kök taşıyıcı arayüzünde perakende sitelerinden kalan mavi-gri tonlu slate-800 kaldırıldı.
+  Kurumsal koyu tema için zinc-950 (Siyah) tonuna geçiş sağlandı.
+-->
+<div id="root" class="bg-zinc-50 dark:bg-zinc-950 min-h-screen transition-colors duration-150"></div>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- Mobil cihazlarda uygun ölçeklendirme sağlar. -->
-
-    <title>Demiray Hidrolik</title> <!-- Tarayıcı sekmesinde görünen sayfa başlığı. -->
-
-    <meta property="og:image:width" content="1200" /> <!-- Open Graph protokolünde görselin genişliği. -->
-
-    <meta property="og:image:height" content="630" /> <!-- Open Graph protokolünde görselin yüksekliği. -->
-
-    <meta property="og:title" content="Demiray Hidrolik" /> <!-- Open Graph protokolünde sayfa başlığı. -->
-
-    <meta property="og:image" content="/Demiraylogo.png" /> <!-- Open Graph protokolünde paylaşımda kullanılacak görsel. -->
-
-    <meta property="og:url" content="http://www.demirayhidrolik.com" /> <!-- Open Graph protokolünde sayfanın URL’si. -->
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  </head>
-
-  <body> <!-- Sayfanın gövde kısmı, içerik burada yer alır. -->
-
-    <div id="root" class="dark:bg-slate-800"></div> <!-- Uygulamanın ana bileşeninin yükleneceği alan. -->
-      <script type="module" src="/src/main.tsx"></script>
-     <script nomodule src="/assets/index-legacy-Bq41xkBW.js"></script> <!-- Legacy fallback -->
-  </body>
-
+<!-- Uygulama Giriş Script Akışı -->
+<script type="module" src="/src/main.tsx"></script>
+<script nomodule src="/assets/index-legacy-Bq41xkBW.js"></script>
+</body>
 </html>

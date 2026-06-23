@@ -34,12 +34,12 @@ const SortProducts: FC<Props> = ({ products, onChange }) => {
     return (
         <select
             ref={sortRef}
-            className="border border-black dark:border-white rounded p-1 dark:text-white dark:bg-slate-600"
+            className="border-2 border-black bg-white text-black text-xs uppercase tracking-wider font-bold py-2 px-3 rounded-none outline-none focus:border-red-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-white dark:focus:border-red-500 cursor-pointer transition-colors duration-150"
             onChange={(e) => sortProducts(e.target.value)}
         >
-            <option value="default">Default</option>
-            <option value="asc">Price (low to high)</option>
-            <option value="desc">Price (high to low)</option>
+            <option value="default" className="font-sans">Sıralama: Varsayılan (Kayıt No)</option>
+            <option value="asc" className="font-sans">Demirbaş Değeri: Düşükten Yükseğe</option>
+            <option value="desc" className="font-sans">Demirbaş Değeri: Yüksekten Düşüğe</option>
         </select>
     );
 };

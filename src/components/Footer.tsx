@@ -1,55 +1,34 @@
 import { FC } from "react";
-import { Link } from "react-router-dom";
-import {  FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const Footer: FC = () => {
+    const currentYear = new Date().getFullYear();
+
     return (
-        <footer className="bg-black text-white py-4 px-6 mt-auto border-t border-gray-800">
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <footer className="bg-neutral-950 text-neutral-400 py-3 px-6 mt-auto border-t border-red-600/30 font-sans antialiased select-none">
+            <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs">
 
-                {/* Sol Kısım: İletişim ve Konum */}
-                <div className="flex gap-3 order-2 md:order-1">
-                    <a
-                        href="mailto:demirayhidrolik06@gmail.com"
-                        className="flex items-center gap-2 bg-zinc-900 border border-zinc-700 hover:bg-white hover:text-black px-3 py-1.5 rounded-md transition-all text-xs"
-                        title="Gmail ile iletişime geçin"
-                    >
-                        <FaEnvelope className="text-sm" />
-                        <span>Gmail</span>
-                    </a>
-
-                    <a
-                        href="https://maps.google.com" // Gerçek linki buraya ekleyebilirsiniz
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 bg-zinc-900 border border-zinc-700 hover:bg-white hover:text-black px-3 py-1.5 rounded-md transition-all text-xs"
-                        title="Konumu görüntüle"
-                    >
-                        <FaMapMarkerAlt className="text-sm" />
-                        <span>Konum</span>
-                    </a>
+                {/* Sol Kısım: Şirket Telif Hakkı ve Uygulama Adı */}
+                <div className="flex items-center gap-2 text-center sm:text-left">
+                    {/* EMS ve Şirket Adı Beyaz ve Kırmızı Vurguyla Öne Çıkarıldı */}
+                    <span className="font-black text-white tracking-wider">
+                        <span className="text-red-600">EMS</span> MOBİL SİSTEMLER
+                    </span>
+                    <span className="text-neutral-700">|</span>
+                    <span className="text-neutral-300 font-medium">
+                        Zimmet Takip Sistemi © {currentYear}
+                    </span>
                 </div>
 
-                {/* Orta Kısım: Telif Hakkı ve Tasarımcı */}
-                <div className="text-center order-1 md:order-2">
-                    <p className="text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">
-                        © {new Date().getFullYear()} Demiray Hidrolik | Tüm Hakları Saklıdır
-                    </p>
-                    <div className="mt-1">
-                        <Link
-                            to="https://www.linkedin.com/in/balaban58/"
-                            className="text-[10px] text-gray-500 hover:text-white transition-colors"
-                        >
-                            Design by <span className="font-bold">Balaban</span>
-                        </Link>
-                    </div>
+                {/* Sağ Kısım: Sistem Durumu ve Versiyon Bilgisi */}
+                <div className="flex items-center gap-4 text-neutral-400">
+
+                    <span className="text-neutral-800">/</span>
+                    <span className="font-mono text-[11px] bg-red-950/20 border border-red-900/40 px-2 py-1 rounded text-red-400 font-semibold">
+                        v1.0.0
+                    </span>
                 </div>
 
-                {/* Sağ Kısım: Boş (Hizalamayı dengeler) */}
-                <div className="hidden md:block w-[150px] order-3"></div>
             </div>
-
-
         </footer>
     );
 };

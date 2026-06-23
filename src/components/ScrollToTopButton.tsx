@@ -29,9 +29,10 @@ const ScrollToTopButton: React.FC = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="bg-gray-800 dark:bg-white text-white dark:text-slate-800 rounded-full h-10 w-10 shadow-md hover:bg-gray-700 transition-opacity duration-300 opacity-50 hover:opacity-100"
+          className="bg-black text-white hover:bg-red-600 dark:bg-zinc-800 dark:hover:bg-red-600 rounded-none h-10 w-10 border border-black dark:border-zinc-700 transition-all duration-200 flex items-center justify-center shadow-2xl"
+          title="Yukarı Kaydır"
         >
-          <IoIosArrowUp size={30} className="m-auto" />
+          <IoIosArrowUp size={24} className="transform hover:-translate-y-0.5 transition-transform" />
         </button>
       )}
     </div>

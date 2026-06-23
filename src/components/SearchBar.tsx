@@ -1,45 +1,71 @@
-import { FC, useState, KeyboardEvent } from "react";
+import { FC, useState, KeyboardEvent, useEffect } from "react";
 import { BsSearch } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 interface SearchBarProps {
-    onSearch?: () => void;
-}   
+    onSearch?: (query: string) => void;
+}
 
 const SearchBar: FC<SearchBarProps> = ({ onSearch }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    const handleSearch = () => {
-        if (searchQuery.trim()) {
-            navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-            setSearchQuery("");
-            onSearch?.();
+    // URL'deki "q" değiştikçe input alanını besle (Geri/İleri butonları veya dış tetiklemeler için)
+    useEffect(() => {
+        const currentQuery = searchParams.get("q") || "";
+        setSearchQuery(currentQuery);
+    }, [searchParams]);
+
+    // Anlık karakter girildikçe tetiklenen fonksiyon
+    const handleInputChange = (value: string) => {
+        setSearchQuery(value);
+
+        // Eğer kullanıcı zaten arama sayfasındaysa, yazılan her karakterde URL parametresini güncelle
+        if (location.pathname === "/search") {
+            if (value.trim()) {
+                setSearchParams({ q: value });
+            } else {
+                setSearchParams({});
+            }
         }
+    };
+
+    const triggerSearch = () => {
+        const q = searchQuery.trim();
+        // Eğer kullanıcı arama sayfasında değilse, kelime olsun ya da olmasın sayfaya yönlendir
+        if (location.pathname !== "/search") {
+            navigate(`/search?q=${encodeURIComponent(q)}`);
+        }
+        if (onSearch) onSearch(q);
     };
 
     const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            handleSearch();
+            triggerSearch();
         }
     };
-    // lg:flex hidden 
+
     return (
-        <div className="flex w-center max-w-[500px] border-1 border-blue-500 mx-5 rounded overflow-hidden">
+        <div className="flex w-full max-w-[450px] border-2 border-black dark:border-zinc-700 rounded-none overflow-hidden bg-white dark:bg-zinc-900 transition-colors">
             <input
                 type="text"
-                placeholder="Ara..."
-                className="border-2 border-blue-500 px-6 py-2 w-full dark:text-white dark:bg-slate-800"
+                placeholder="Personel Ara..."
+                className="px-4 py-2 w-full text-sm font-medium bg-transparent text-black dark:text-white placeholder-zinc-400 focus:outline-none"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onChange={(e) => handleInputChange(e.target.value)}
+                onKeyDown={handleKeyPress}
             />
-            <div
-                className="bg-blue-500 text-white text-[26px] grid place-items-center px-4 cursor-pointer hover:bg-blue-600"
-                onClick={handleSearch}
+
+            <button
+                type="button"
+                className="bg-black text-white text-[18px] grid place-items-center px-5 cursor-pointer hover:bg-red-600 dark:bg-zinc-800 dark:hover:bg-red-600 border-l border-black dark:border-zinc-700 transition-colors duration-150"
+                onClick={triggerSearch}
+                aria-label="Arama Yap"
             >
                 <BsSearch />
-            </div>
+            </button>
         </div>
     );
 };

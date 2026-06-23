@@ -6,27 +6,29 @@ import { Route, Routes } from "react-router-dom";
 
 import { Toaster } from "react-hot-toast";
 import Footer from "./components/Footer";
-import SingleProduct from "./pages/SingleProduct";
+
 import LoginModal from "./components/LoginModal";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Profile from "./pages/Profile";
+
 import AllProducts from "./pages/AllProducts";
 import ScrollToTopButton from "./components/ScrollToTopButton";
-import BannerPopup from "./components/BannerPopup";
+
 import AllCategories from "./pages/AllCategories";
-import SingleCategory from "./pages/SingleCategory";
+
 import SearchPage from "./pages/SearchPage";
 import { AuthProvider } from "./redux/AuthContext";
 import Login  from "./pages/Login";
 import Register from "./pages/Register";
-import Cart from "./components/Cart";
+
 import AdminPage from "./pages/AdminPage";
 import  ForgotPassword  from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyEmail from "./pages/VerifyEmail";
-import Documents from "./pages/Documents.tsx";
+
 import AllUsers  from "./pages/AllUsers.tsx";
 import UserProducts from "./pages/UserProducts.tsx";
+import SubCategories from "./pages/SubCategories.tsx";
+import SubCategoryProducts from "./pages/SubCategoryProducts" ;
 
 
 function App() {
@@ -48,24 +50,26 @@ function App() {
           <Route path="/search" element={<SearchPage />} /> Api den çekildi
           <Route path="/products" element={<AllProducts />} /> // Api den çekildi
           <Route path="/categories" element={<AllCategories />} /> // Api den çekildi
-          <Route path="/product/:productID" element={<SingleProduct />} /> // Api den çekildi
-          <Route path="/category/:slug" element={<SingleCategory />} />    // Api den çekildi
+
+
           <Route path="/register" element={<Register/>} /> // Api den çekildi
 
-          <Route path="/cart" element={<Cart />} />
+           <Route path="/subcategories" element={<SubCategories />} />
+           <Route path="/subcategory-products" element={<SubCategoryProducts />} />
+
 
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/documents" element={<Documents />} />
+
 
 
 
 
            <Route element={<ProtectedRoute />}>
 
-            <Route path="/account" element={<Profile />} /> // Api den çekildi
+
           </Route>
         </Routes>
         </main>
@@ -74,7 +78,7 @@ function App() {
 
         <LoginModal />
         <ScrollToTopButton />
-        <BannerPopup />
+
         </div>
       </AuthProvider>
     </Provider>

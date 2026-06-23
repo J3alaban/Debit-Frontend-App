@@ -1,115 +1,101 @@
 import { FC, useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { Product } from "../models/Product";
-import { /*useAppDispatch,*/ useAppSelector } from "../redux/hooks";
- // import { updateLoading } from "../redux/features/homeSlice";
-import SortProducts from "../components/SortProducts";
-import PaginatedProducts from "../components/PaginatedProducts";
+import { useSearchParams } from "react-router-dom";
+import { useAppSelector } from "../redux/hooks";
 
-
-interface Category {
+interface User {
   id: number;
-  name: string;
-  slug: string;
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 const SearchPage: FC = () => {
   const [searchParams] = useSearchParams();
-  const query = (searchParams.get("q") || "").toLowerCase();
+  const query = (searchParams.get("q") || "").trim();
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categoryResults, setCategoryResults] = useState<Category[]>([]);
+  const [userResults, setUserResults] = useState<User[]>([]);
   const [notFound, setNotFound] = useState(false);
 
-  //  const dispatch = useAppDispatch();
   const isLoading = useAppSelector((state) => state.homeReducer.isLoading);
-  const navigate = useNavigate();
 
-useEffect(() => {
-  const products: Product[] =
-    JSON.parse(localStorage.getItem("products") || "[]");
+  useEffect(() => {
+    const users: User[] = JSON.parse(localStorage.getItem("users") || "[]");
 
-  const categories: Category[] =
-    JSON.parse(localStorage.getItem("categories") || "[]");
+    if (!query) {
+      setUserResults([]);
+      setNotFound(true);
+      return;
+    }
 
-  if (!query) {
-    setProducts([]);
-    setCategoryResults([]);
-    setNotFound(true);
-    return;
-  }
+    setNotFound(false);
 
-  const q = query.toLowerCase();
-  setNotFound(false);
+    // Arama girdisini boşluklardan ayırarak bağımsız kelime grupları (token) oluşturuyoruz
+    const searchTerms = query.toLowerCase().split(/\s+/).filter(Boolean);
 
-  const filteredProducts = products.filter(p =>
-    p.title.toLowerCase().includes(q)
-  );
+    const matchedUsers = users.filter((u) => {
+      const fullNameLower = `${u.firstName || ""} ${u.lastName || ""}`.toLowerCase();
+      const emailLower = (u.email || "").toLowerCase();
 
-  if (filteredProducts.length > 0) {
-    setProducts(filteredProducts);
-    setCategoryResults([]);
-    return;
-  }
+      // Akıllı Filtrasyon Protokolü: Girdi sayısı arttıkça (örn: "kemal" -> "kemal yıl")
+      // girilen TÜM kelime parçalarının personelin ad+soyad kombinasyonunda veya mailinde bulunması şart koşulur.
+      return searchTerms.every((term) =>
+        fullNameLower.includes(term) || emailLower.includes(term)
+      );
+    });
 
-  const matchedCategories = categories.filter(
-    c =>
-      c.name.toLowerCase().includes(q) ||
-      c.slug.toLowerCase().includes(q)
-  );
+    setUserResults(matchedUsers);
+    setNotFound(matchedUsers.length === 0);
 
-  if (matchedCategories.length > 0) {
-    setCategoryResults(matchedCategories);
-    setProducts([]);
-  } else {
-    setNotFound(true);
-  }
-}, [query]);
+  }, [searchParams, query]); // URL parametre değişimlerini eksiksiz yakalar
+
   return (
-    <div className="container mx-auto min-h-[83vh] p-4">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-lg">
-            Search results for: <b>"{query}"</b>
-          </span>
+    <div className="container mx-auto min-h-[83vh] p-4 font-sans antialiased bg-zinc-50 dark:bg-zinc-950">
 
-          {products.length > 0 && (
-            <SortProducts products={products} onChange={setProducts} />
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-white dark:bg-zinc-900 border-2 border-black dark:border-zinc-800 mb-6">
+        <span className="text-sm font-bold uppercase">
+          PERSONEL ARAMA:{" "}
+          <span className="font-mono text-red-600">"{query || "..."}"</span>
+        </span>
+      </div>
+
+      {/* LOADING */}
+      {isLoading ? (
+        <div className="flex justify-center mt-32">
+          <div className="animate-spin h-10 w-10 border-4 border-t-black dark:border-t-white" />
+        </div>
+      ) : notFound ? (
+        <div className="text-center mt-32 text-xs uppercase font-bold text-zinc-500">
+          Eşleşen personel bulunamadı
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* USERS / PERSONEL LIST */}
+          {userResults.length > 0 && (
+            <div className="bg-white dark:bg-zinc-900 border-2 border-zinc-200 dark:border-zinc-800 p-4 rounded-sm shadow-sm">
+              <p className="font-bold text-sm uppercase tracking-wider mb-4 border-b pb-2 border-zinc-100 dark:border-zinc-800">
+                Arama Sonuçları ({userResults.length})
+              </p>
+
+              <div className="space-y-2">
+                {userResults.map((u) => (
+                  <div
+                    key={u.id}
+                    className="p-3 border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 rounded-sm flex justify-between items-center hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    <span className="font-medium text-sm text-zinc-800 dark:text-zinc-200">
+                      {u.firstName} {u.lastName}
+                    </span>
+                    <span className="text-xs font-mono opacity-60 text-zinc-600 dark:text-zinc-400">
+                      {u.email}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
-
-        {isLoading ? (
-          <div className="flex justify-center mt-32">
-            <div className="animate-spin h-12 w-12 border-t-2 border-b-2 border-gray-900 rounded-full" />
-          </div>
-        ) : notFound ? (
-          <div className="text-center mt-32 text-2xl">
-            Sonuç bulunamadı.
-          </div>
-        ) : categoryResults.length > 0 ? (
-          <div>
-            <p className="mb-4 text-lg">Eşleşen kategoriler:</p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {categoryResults.map((cat) => (
-                <div
-                  key={cat.id}
-                  onClick={() => navigate(`/category/${cat.slug}`)}
-                  className="cursor-pointer bg-gray-100 p-4 hover:bg-gray-200 rounded"
-                >
-                  <div className="font-semibold">{cat.name}</div>
-                  <span className="text-blue-500 text-sm">Ürünleri gör</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <PaginatedProducts
-            products={products}
-            isLoading={isLoading}
-            initialRows={5}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 };

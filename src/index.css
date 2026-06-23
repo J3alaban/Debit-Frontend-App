@@ -1,22 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Karla&family=Lato&family=Lora:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* styles.css */
+/* Kurumsal ve Veri Odaklı Zimmet Takip Teması
+  Bileşenlerin arka planları, border'ları ve genel akışı için temel sınıflar
+*/
+@layer base {
+  body {
+    @apply bg-gray-50 text-slate-900 antialiased selection:bg-red-600 selection:text-white;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* Animasyon Geçişleri (Popup, Modal ve Bildirimler için) */
 .popup-enter {
-  @apply opacity-0;
+  @apply opacity-0 scale-95;
 }
 
 .popup-enter-active {
-  @apply transition-opacity duration-300 opacity-100;
+  @apply transition-all duration-200 ease-out opacity-100 scale-100;
 }
 
 .popup-exit {
-  @apply opacity-100;
+  @apply opacity-100 scale-100;
 }
 
 .popup-exit-active {
-  @apply transition-opacity duration-300 opacity-0;
+  @apply transition-all duration-150 ease-in opacity-0 scale-95;
+}
+
+
+.asset-code {
+  font-family: 'JetBrains Mono', monospace;
 }

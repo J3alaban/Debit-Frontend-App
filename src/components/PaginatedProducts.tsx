@@ -1,5 +1,4 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import ProductCard from "../components/ProductCard";
 import { Product } from "../models/Product";
 
 interface Props {
@@ -9,67 +8,101 @@ interface Props {
 }
 
 const getColumnsForWidth = (width: number) => {
-    if (width >= 1280) return 4; // xl
-    if (width >= 1024) return 3; // lg
-    if (width >= 768) return 2; // md
-    return 1; // sm ve altı
+    if (width >= 1280) return 1;
+    if (width >= 1024) return 1;
+    if (width >= 768) return 1;
+    return 1;
 };
 
-const PaginatedProducts: FC<Props> = ({ products, isLoading, initialRows = 5 }) => {
+const PaginatedProducts: FC<Props> = ({
+    products,
+    isLoading,
+    initialRows = 10
+}) => {
+
     const [rowsToShow, setRowsToShow] = useState<number>(initialRows);
-    const [columns, setColumns] = useState<number>(() =>
-        typeof window !== "undefined" ? getColumnsForWidth(window.innerWidth) : 4
+
+    const [columns] = useState<number>(() =>
+        typeof window !== "undefined" ? getColumnsForWidth(window.innerWidth) : 1
     );
 
     useEffect(() => {
         const handleResize = () => {
-            setColumns(getColumnsForWidth(window.innerWidth));
+            // tek kolon liste olduğu için sabit
         };
+
         if (typeof window !== "undefined") {
             window.addEventListener("resize", handleResize);
-            handleResize();
         }
+
         return () => {
-            if (typeof window !== "undefined") window.removeEventListener("resize", handleResize);
+            if (typeof window !== "undefined") {
+                window.removeEventListener("resize", handleResize);
+            }
         };
     }, []);
 
-    const itemsPerPage = useMemo(() => rowsToShow * columns, [rowsToShow, columns]);
+    const itemsPerPage = useMemo(
+        () => rowsToShow * columns,
+        [rowsToShow, columns]
+    );
+
     const visibleProducts = products.slice(0, itemsPerPage);
     const allShown = visibleProducts.length >= products.length;
 
     return (
         <>
             {isLoading ? (
-                // Kurumsal, pürüzsüz loading alanı
-                <div className="flex flex-col items-center justify-center py-24 w-full">
-                    <div className="relative flex items-center justify-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-4 border-zinc-200 dark:border-zinc-800 border-t-zinc-600 dark:border-t-zinc-400"></div>
-                    </div>
-                    <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mt-4 tracking-wide animate-pulse">
-                        Envanter kayıtları yükleniyor...
+                <div className="flex flex-col items-center justify-center py-24 w-full bg-white dark:bg-zinc-900 border-2 border-dashed border-zinc-200 dark:border-zinc-800">
+                    <div className="animate-spin h-10 w-10 border-4 border-t-red-600 border-zinc-300 rounded-full"></div>
+                    <span className="text-xs font-bold uppercase mt-4">
+                        Yükleniyor...
                     </span>
                 </div>
             ) : (
                 <>
-                    {/* Zimmet Kartları için Grid Düzeni */}
-                    <div className="grid gap-4 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
+                    {/* LIST VIEW */}
+                    <div className="flex flex-col gap-2">
+
                         {visibleProducts.map((product) => (
-                            <ProductCard key={product.id} {...product} />
+                            <div
+                                key={product.id}
+                                className="flex items-center justify-between border-2 border-zinc-200 dark:border-zinc-800 p-3 bg-white dark:bg-zinc-900 hover:border-black dark:hover:border-red-600 transition-colors"
+                            >
+
+                                {/* LEFT: PRODUCT INFO */}
+                                <div className="flex flex-col">
+                                    <span className="font-bold text-sm text-black dark:text-white">
+                                        {product.title}
+                                    </span>
+
+                                    <span className="text-xs text-zinc-500">
+                                        {product.description}
+                                    </span>
+                                </div>
+
+                                {/* RIGHT: META */}
+                                <div className="text-xs font-mono text-zinc-500">
+                                    ID: {product.id}
+                                </div>
+
+                            </div>
                         ))}
+
                     </div>
 
-                    {/* Daha Fazla Göster Paneli */}
+                    {/* LOAD MORE */}
                     {!allShown && (
-                        <div className="flex flex-col items-center justify-center mt-8 pt-4 border-t border-zinc-100 dark:border-zinc-900/60 w-full">
-                            <p className="text-xs text-zinc-400 dark:text-zinc-500 mb-3">
-                                <span className="font-medium text-zinc-600 dark:text-zinc-400">{visibleProducts.length}</span> / {products.length} demirbaş gösteriliyor
+                        <div className="flex flex-col items-center mt-6 pt-4 border-t-2 border-black dark:border-zinc-800">
+                            <p className="text-xs font-bold mb-2">
+                                {visibleProducts.length} / {products.length}
                             </p>
+
                             <button
-                                onClick={() => setRowsToShow((r) => r + initialRows)}
-                                className="px-5 py-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900 text-sm font-medium shadow-sm transition-all duration-150 active:scale-[0.98]"
+                                onClick={() => setRowsToShow(r => r + initialRows)}
+                                className="px-5 py-2 border-2 border-black text-xs font-bold uppercase hover:bg-black hover:text-white transition"
                             >
-                                Daha Fazla Listele
+                                Daha Fazla
                             </button>
                         </div>
                     )}
