@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from "react";
 import { Config } from "../helpers/Config";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
 import { updateLoading } from "../redux/features/homeSlice";
 
 type ProductBody = {

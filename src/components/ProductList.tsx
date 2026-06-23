@@ -30,18 +30,7 @@ const ProductList: FC<Props> = ({
     {/* Kurumsal Grid Altyapısı */}
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products?.map((product) => (
-        <ProductCard
-          key={product.id}
-          id={product.id}
-          category={product.category}
-          title={product.title}
-          price={product.price}
-          thumbnail={product.images?.[0] || ""}
-          rating={product.rating}
-          discountPercentage={product.discountPercentage}
-          showDelete={isWishlist}
-          onDelete={() => onDelete?.(product.id)}
-        />
+
       ))}
     </div>
   </div>
