@@ -37,20 +37,21 @@ interface SubCategory {
 
 interface User {
   id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone?: string;
-  tcNo?: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  phone?: string | null;
+  tcNo?: string | null;
 }
+
 
 interface UserProfile {
   id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  tcNo: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  phone: string | null;
+  tcNo: string | null;
 }
 
 interface ProductResponse {
@@ -165,12 +166,18 @@ const ProductManagement: FC = () => {
       setMatchedGlobalUsers([]);
       return;
     }
-    const q = globalUserSearchTerm.toLowerCase();
-    const matched = users.filter(u =>
-      `${u.firstName} ${u.lastName}`.toLowerCase().includes(q) ||
-      u.email.toLowerCase().includes(q)
-    );
-    setMatchedGlobalUsers(matched);
+ const q = globalUserSearchTerm.toLowerCase();
+
+ const matched = users.filter(u =>
+   `${u.firstName || ""} ${u.lastName || ""}`
+     .toLowerCase()
+     .includes(q) ||
+   (u.email || "")
+     .toLowerCase()
+     .includes(q)
+ );
+
+ setMatchedGlobalUsers(matched);
   }, [globalUserSearchTerm, users]);
 
   // MODAL İÇİ: Personel Arama Mantığı (Yeni Kayıt)
@@ -179,12 +186,19 @@ const ProductManagement: FC = () => {
       setFilteredUsers([]);
       return;
     }
-    const q = userSearchTerm.toLowerCase();
-    const matched = users.filter(u =>
-      `${u.firstName} ${u.lastName}`.toLowerCase().includes(q) ||
-      u.email.toLowerCase().includes(q)
-    );
-    setFilteredUsers(matched);
+const q = userSearchTerm.toLowerCase();
+
+const matched = users.filter(u =>
+  `${u.firstName || ""} ${u.lastName || ""}`
+    .toLowerCase()
+    .includes(q) ||
+  (u.email || "")
+    .toLowerCase()
+    .includes(q)
+);
+
+setFilteredUsers(matched);
+
   }, [userSearchTerm, users]);
 
 
