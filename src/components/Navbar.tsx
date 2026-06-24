@@ -16,9 +16,9 @@ import { Config } from "../helpers/Config";
 
 interface User {
     id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
 }
 
 const Navbar: FC = () => {
@@ -29,9 +29,6 @@ const Navbar: FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-    // ==========================================
-    // 👤 PRODUCTMANAGEMENT ARAMA STATE'LERİ
-    // ==========================================
     const [users, setUsers] = useState<User[]>([]);
     const [globalUserSearchTerm, setGlobalUserSearchTerm] = useState("");
     const [matchedGlobalUsers, setMatchedGlobalUsers] = useState<User[]>([]);
@@ -40,9 +37,7 @@ const Navbar: FC = () => {
     const isDarkMode = useAppSelector((state) => state.homeReducer.isDarkMode);
     const { setToken } = useContext(AuthContext)!;
 
-    // =========================
-    // 🔥 BACKEND DATA CACHE & INITIALIZATION
-    // =========================
+
     useEffect(() => {
         // PRODUCTS - Düzeltilen Satır 🚀
         fetch(`${Config.api.baseUrl}/api/v1/products`)
@@ -75,10 +70,14 @@ const Navbar: FC = () => {
             return;
         }
         const q = globalUserSearchTerm.toLowerCase();
-        const matched = users.filter(u =>
-            `${u.firstName} ${u.lastName}`.toLowerCase().includes(q) ||
-            u.email.toLowerCase().includes(q)
-        );
+    const matched = users.filter(u =>
+        `${u.firstName || ""} ${u.lastName || ""}`
+            .toLowerCase()
+            .includes(q) ||
+        (u.email || "")
+            .toLowerCase()
+            .includes(q)
+    );
         setMatchedGlobalUsers(matched);
     }, [globalUserSearchTerm, users]);
 
