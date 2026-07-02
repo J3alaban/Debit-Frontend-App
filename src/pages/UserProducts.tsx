@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { updateLoading } from "../redux/features/homeSlice";
 import { Config } from "../helpers/Config";
-import { useSearchParams } from "react-router-dom"; // 🚀 URL parametrelerini okumak için eklendi
+import { useSearchParams } from "react-router-dom";
 
 interface Product {
     id: number;
@@ -25,6 +25,7 @@ interface Product {
     thumbnail: string | null;
     userId: number;
     userEmail: string;
+    barcode: string;
 }
 
 interface ProductResponse {
@@ -45,24 +46,24 @@ interface UserProfile {
 
 const UserProducts: FC = () => {
     const dispatch = useAppDispatch();
-    const [searchParams] = useSearchParams(); // 🚀 URL query string'i dinlemek için tanımlandı
+    const [searchParams] = useSearchParams();
 
     const isLoading = useAppSelector((state) => state.homeReducer.isLoading);
     const [user, setUser] = useState<UserProfile | null>(null);
     const [products, setProducts] = useState<Product[]>([]);
     const [showPrintModal, setShowPrintModal] = useState(false);
 
-    // Sayfalama (Pagination) State Yönetimi
+
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const pageSize = 10;
 
-    // 🚀 URL'de ?id=... parametresi varsa onu al, yoksa localStorage'a bak
+
     const urlUserId = searchParams.get("id");
     const targetUserId = urlUserId || localStorage.getItem("selectedUserId") || localStorage.getItem("userId");
 
-    // 🚀 EĞER NAVBAR'DAN BAŞKA BİR PERSONELE TIKLANIRSA SAYFALAMAYI SIFIRLA
+
     useEffect(() => {
         setCurrentPage(0);
     }, [urlUserId]);
@@ -84,7 +85,7 @@ const UserProducts: FC = () => {
                 setTotalPages(productsData.totalPages || 0);
                 setTotalElements(productsData.totalElements || 0);
 
-                // 🚀 Profil verisini targetUserId her değiştiğinde veya sayfa 0 olduğunda güncelle
+
                 const userResponse = await fetch(
                     `${Config.api.baseUrl}/api/v1/auth/${targetUserId}/profile`
                 );
@@ -99,7 +100,7 @@ const UserProducts: FC = () => {
         };
 
         loadData();
-    }, [dispatch, targetUserId, currentPage]); // 🚀 targetUserId bağımlılık dizisine eklenerek reaktif hale getirildi
+    }, [dispatch, targetUserId, currentPage]);
 
     const handlePrint = (includeImages: boolean) => {
         const printWindow = window.open("", "_blank");
@@ -126,7 +127,7 @@ const UserProducts: FC = () => {
                     <td>${product.brand || "-"}</td>
                     <td>${product.categoryName}</td>
                     <td>${product.subCategoryName}</td>
-                    <td style="font-family:monospace;font-size:11px;">${product.sku || "-"}</td>
+                    <td style="font-family:monospace;font-size:11px;">${product.barcode || "-"}</td>
                     <td style="font-family:monospace;font-weight:bold;">${product.stock}</td>
                     <td>${product.size || "-"}</td>
                     ${
@@ -175,7 +176,7 @@ const UserProducts: FC = () => {
                             <th>Marka</th>
                             <th>Üst Grup</th>
                             <th>Alt Sınıf</th>
-                            <th>SKU Kodu</th>
+                            <th>Barkod</th>
                             <th>Miktar</th>
                             <th>Boyut</th>
                             ${includeImages ? "<th>Görsel Kayıt</th>" : ""}
@@ -281,7 +282,7 @@ const UserProducts: FC = () => {
                 </div>
             )}
 
-            {/* Ana İçerik / Tablo Yapısı */}
+
             {isLoading ? (
                 <div className="flex flex-col items-center justify-center pt-32 gap-3">
                     <div className="animate-spin h-10 w-10 border-4 border-zinc-200 border-t-black dark:border-zinc-800 dark:border-t-red-600 rounded-none" />
@@ -323,8 +324,8 @@ const UserProducts: FC = () => {
                                         <td className="py-4 px-4 whitespace-nowrap">
                                             <div className="flex flex-col text-xs font-mono text-zinc-600 dark:text-zinc-400 gap-1">
                                                 <span>
-                                                    <span className="text-zinc-400 font-sans text-[10px] font-bold uppercase">SKU:</span>{" "}
-                                                    {product.sku || "-"}
+                                                    <span className="text-zinc-400 font-sans text-[10px] font-bold uppercase">barcode:</span>{" "}
+                                                    {product.barcode || "-"}
                                                 </span>
                                                 <span>
                                                     <span className="text-zinc-400 font-sans text-[10px] font-bold uppercase">Boyut:</span>{" "}

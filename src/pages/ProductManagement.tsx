@@ -20,6 +20,7 @@ type ProductBody = {
   size: string;
   categoryName?: string;
   subCategoryName?: string;
+  barcode: string;
 };
 
 interface Category {
@@ -267,7 +268,7 @@ setFilteredUsers(matched);
             <td>${product.brand || "-"}</td>
             <td>${product.categoryName || "-"}</td>
             <td>${product.subCategoryName || "-"}</td>
-            <td style="font-family:monospace;font-size:11px;">${product.sku || "-"}</td>
+            <td style="font-family:monospace;font-size:11px;">${product.barcode || "-"}</td>
             <td style="font-family:monospace;font-weight:bold;">${product.stock}</td>
             <td>${product.size || "-"}</td>
             ${includeImages ? `<td>${product.images?.length ? `<img src="${product.images[0]}" style="width:60px;height:60px;object-fit:cover;border:1px solid #000;" />` : "-"}</td>` : ""}
@@ -304,7 +305,7 @@ setFilteredUsers(matched);
                       <th>Marka</th>
                       <th>Üst Grup</th>
                       <th>Alt Sınıf</th>
-                      <th>SKU Kodu</th>
+                      <th>Barkod</th>
                       <th>Miktar</th>
                       <th>Boyut</th>
                       ${includeImages ? "<th>Görsel Kayıt</th>" : ""}
@@ -517,7 +518,7 @@ setFilteredUsers(matched);
                   <thead>
                     <tr className="bg-zinc-100 dark:bg-zinc-800 text-[10px] font-bold uppercase border-b border-black">
                       <th className="py-3 px-4 pl-6">Sınıflandırma</th>
-                      <th className="py-3 px-4">Kodlar / SKU</th>
+                      <th className="py-3 px-4">Kodlar / Barkod</th>
                       <th className="py-3 px-4 text-center">Miktar</th>
                       <th className="py-3 px-6">Varlık Açıklaması / Detay</th>
                       <th className="py-3 px-4 text-center">İşlemler</th>
@@ -538,7 +539,7 @@ setFilteredUsers(matched);
                             </div>
                           </td>
                           <td className="py-3 px-4 font-mono text-zinc-500">
-                            <div>SKU: {product.sku || "-"}</div>
+                            <div>Barkod: {product.barcode || "-"}</div>
                             <div>Boyut: {product.size || "-"}</div>
                           </td>
                           <td className="py-3 px-4 text-center font-bold font-mono text-sm">{product.stock} Adet</td>
@@ -764,8 +765,8 @@ setFilteredUsers(matched);
                 <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">SKU / Stok Kodu</label>
                 <input
                   className="w-full border-2 border-black p-2.5 rounded-none font-medium text-sm text-black focus:border-red-600 outline-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-white dark:focus:border-red-500 font-mono"
-                  value={form.sku}
-                  onChange={e => setForm({ ...form, sku: e.target.value })}
+                  value={form.barcode}
+                  onChange={e => setForm({ ...form, barcode: e.target.value })}
                   placeholder="Örn: DELL-LAT-5520"
                 />
               </div>
