@@ -95,6 +95,7 @@ const ProductManagement: FC = () => {
     categoryId: 0, subCategoryId: undefined,
     brand: "", sku: "", discountPercentage: 0,
     weight: 0, dimensions: { width: 0, height: 0, depth: 0 },
+    barcode: "",
     images: [], size: ""
   };
 
